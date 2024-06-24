@@ -36,7 +36,7 @@ app.get("/api/:date?", (req, res) => {
     timestamp = new Date();
     unix = Math.floor(timestamp.getTime() / 1000);
   } else if (!isNaN(date)) {
-    const unixTimeString = parseInt(date, 10);
+    const unixTimeString = Number(date);
     timestamp = new Date(unixTimeString * 1000);
     unix = unixTimeString;
 
