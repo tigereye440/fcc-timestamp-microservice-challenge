@@ -34,7 +34,7 @@ app.get("/api/:date?", (req, res) => {
 
   if (!date) {
     timestamp = new Date();
-    unix = Math.floor(timestamp.getTime() / 1000);
+    unix = Math.floor(timestamp.getTime());
   } else if (!isNaN(date)) {
     const unixTimeString = Number(date);
     timestamp = new Date(unixTimeString * 1000);
@@ -42,7 +42,7 @@ app.get("/api/:date?", (req, res) => {
 
   }  else if (validDateRegex.test(date)) {
     timestamp = new Date(date);
-    unix = Number(Math.floor(timestamp.getTime() / 1000));
+    unix = Number(Math.floor(timestamp.getTime()));
   } else {
     // Handle invalid Unix timestamp format
     return res.status(400).json({ error: "Invalid Date" });
