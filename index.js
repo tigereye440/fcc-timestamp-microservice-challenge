@@ -43,9 +43,6 @@ app.get("/api/:date?", (req, res) => {
   }  else if (validDateRegex.test(date)) {
     timestamp = new Date(date);
     unix = Number(Math.floor(timestamp.getTime() / 1000));
-  } else if (date == "") {
-    timestamp = new Date(Date.now());
-    unix = Number(Math.floor(timestamp.getTime() / 1000));
   } else {
     // Handle invalid Unix timestamp format
     return res.status(400).json({ error: "Invalid Date" });
