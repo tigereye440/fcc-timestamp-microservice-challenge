@@ -24,30 +24,38 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
-app.get("/api/:date", (req, res) => {
-  const { date } = req.params
+app.get("/api/:date?", (req, res) => {
+  const  date  = req.params.date || '';
 
   // Date regex
   const validDateRegex = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/;
   let timestamp;
   let unix;
-  
 
-  if (!isNaN(date)) {
+  if (!date) {
+    timestamp = new Date();
+    unix = Math.floor(timestamp.getTime() / 1000);
+  } else if (!isNaN(date)) {
     const unixTimeString = parseInt(date, 10);
     timestamp = new Date(unixTimeString * 1000);
     unix = unixTimeString;
 
   }  else if (validDateRegex.test(date)) {
     timestamp = new Date(date);
-    unix = Math.floor(timestamp.getTime() / 1000);
-  }
-
-  if (!isNaN(timestamp.getTime())) {
-    return res.json({ "unix":unix,"utc":timestamp.toUTCString()})
+    unix = Number(Math.floor(timestamp.getTime() / 1000));
+  } else if (date == "") {
+    timestamp = new Date(Date.now());
+    unix = Number(Math.floor(timestamp.getTime() / 1000));
   } else {
     // Handle invalid Unix timestamp format
-    return res.status(400).json({ error: "Invalid Unix timestamp format. It should be a valid number." });
+    return res.status(400).json({ error: "Invalid Date" });
+  }
+
+
+  if (!isNaN(timestamp.getTime())) {
+    return res.json({ unix:unix, utc:timestamp.toUTCString() })
+  } else {
+    return res.status(400).json({ error: "Invalid Date" });
   }
 
 
