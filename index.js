@@ -37,7 +37,7 @@ app.get("/api/:date?", (req, res) => {
     unix = Math.floor(timestamp.getTime());
   } else if (!isNaN(date)) {
     const unixTimeString = Number(date);
-    timestamp = new Date(unixTimeString * 1000);
+    timestamp = new Date(unixTimeString);
     unix = unixTimeString;
 
   }  else if (validDateRegex.test(date)) {
