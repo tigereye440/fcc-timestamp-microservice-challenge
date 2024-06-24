@@ -24,27 +24,27 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
-app.get("/api/:timestamp", (req, res) => {
-  const { timestamp } = req.params
+app.get("/api/:date", (req, res) => {
+  const { date } = req.params
 
   // Date regex
   const validDateRegex = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/;
-  let date;
+  let timestamp;
   let unix;
   
 
-  if (!isNaN(timestamp)) {
-    const unixTimeString = parseInt(timestamp, 10);
-    date = new Date(unixTimeString * 1000);
+  if (!isNaN(date)) {
+    const unixTimeString = parseInt(date, 10);
+    timestamp = new Date(unixTimeString * 1000);
     unix = unixTimeString;
 
-  }  else if (validDateRegex.test(timestamp)) {
-    date = new Date(timestamp);
-    unix = Math.floor(date.getTime() / 1000);
+  }  else if (validDateRegex.test(date)) {
+    timestamp = new Date(date);
+    unix = Math.floor(timestamp.getTime() / 1000);
   }
 
-  if (!isNaN(date.getTime())) {
-    return res.json({ "unix":unix,"utc":date.toUTCString()})
+  if (!isNaN(timestamp.getTime())) {
+    return res.json({ "unix":unix,"utc":timestamp.toUTCString()})
   } else {
     // Handle invalid Unix timestamp format
     return res.status(400).json({ error: "Invalid Unix timestamp format. It should be a valid number." });
